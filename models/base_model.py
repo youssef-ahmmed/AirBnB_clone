@@ -3,6 +3,7 @@
 
 import datetime
 import uuid
+import models
 
 
 class BaseModel:
@@ -14,11 +15,13 @@ class BaseModel:
             self.id: str = str(uuid.uuid4())
             self.created_at: datetime = datetime.datetime.now()
             self.updated_at: datetime = datetime.datetime.now()
+            models.storage.new(self)
             return
 
         self._create_instance_from_dict(*args, **kwargs)
 
     def _create_instance_from_dict(self, *_args, **kwargs) -> None:
+      """create new instance from dictionary input"""
         for k, value in kwargs.items():
             if k in ["updated_at", "created_at"]:
                 time_format: str = "%Y-%m-%dT%H:%M:%S.%f"
@@ -29,7 +32,9 @@ class BaseModel:
                 setattr(self, k, value)
 
     def save(self) -> None:
+      """Updates the updated_at and calls storage.save"""
         self.updated_at = datetime.datetime.now()
+        models.storage.save()
 
     def to_dict(self) -> dict:
         """returns a dictionary containing all keys/values of
