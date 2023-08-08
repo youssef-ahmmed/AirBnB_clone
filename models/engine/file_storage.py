@@ -2,7 +2,11 @@
 """Defines FileStorage module"""
 import json
 import os
+
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
 
 
 class FileStorage:
@@ -26,7 +30,7 @@ class FileStorage:
             json.dump(new_dict, file)
 
     def reload(self) -> None:
-        """"""
+        """Deserializes the JSON file to __objects"""
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r", encoding="UTF-8") as file:
                 new_dict = json.load(file)
