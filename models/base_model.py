@@ -8,11 +8,25 @@ import uuid
 class BaseModel:
     """Defines all common attributes/methods for other classes"""
 
-    def __init__(self) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         """init new or old object"""
-        self.id: str = str(uuid.uuid4())
-        self.created_at: datetime = datetime.datetime.now()
-        self.updated_at: datetime = datetime.datetime.now()
+        if not kwargs:
+            self.id: str = str(uuid.uuid4())
+            self.created_at: datetime = datetime.datetime.now()
+            self.updated_at: datetime = datetime.datetime.now()
+            return
+
+        self._create_instance_from_dict(*args, **kwargs)
+
+    def _create_instance_from_dict(self, *_args, **kwargs) -> None:
+        for k, value in kwargs.items():
+            if k in ["updated_at", "created_at"]:
+                time_format: str = "%Y-%m-%dT%H:%M:%S.%f"
+                time: datetime = datetime.datetime.strptime(value, time_format)
+                setattr(self, k, time)
+                continue
+            if k != "__class__":
+                setattr(self, k, value)
 
     def save(self) -> None:
         self.updated_at = datetime.datetime.now()
