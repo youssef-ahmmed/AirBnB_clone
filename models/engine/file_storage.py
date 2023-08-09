@@ -7,10 +7,15 @@ from models.base_model import BaseModel
 from models.user import User
 from models.state import State
 from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class FileStorage:
-    """Serializes instances to a JSON file and deserializes JSON file to instances"""
+    """Serializes instances to a JSON file and
+       deserializes JSON file to instances
+    """
     __file_path: str = "file.json"
     __objects: dict = {}
 
@@ -26,7 +31,8 @@ class FileStorage:
     def save(self) -> None:
         """Serializes __objects to the JSON file"""
         with open(self.__file_path, "w", encoding="UTF-8") as file:
-            new_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
+            new_dict = {key: obj.to_dict() for key, obj
+                        in self.__objects.items()}
             json.dump(new_dict, file)
 
     def reload(self) -> None:
