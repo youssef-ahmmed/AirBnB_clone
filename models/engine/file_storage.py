@@ -28,6 +28,12 @@ class FileStorage:
         obj_key: str = obj.__class__.__name__ + "." + obj.id
         self.__objects[obj_key] = obj
 
+    def delete(self, key) -> None:
+        del self.__objects[key]
+
+    def update(self, key, value) -> None:
+        self.__objects[key] = value
+
     def save(self) -> None:
         """Serializes __objects to the JSON file"""
         with open(self.__file_path, "w", encoding="UTF-8") as file:
