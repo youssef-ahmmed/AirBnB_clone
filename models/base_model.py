@@ -21,7 +21,7 @@ class BaseModel:
         self._create_instance_from_dict(*args, **kwargs)
 
     def _create_instance_from_dict(self, *_args, **kwargs) -> None:
-      """create new instance from dictionary input"""
+        """create new instance from dictionary input"""
         for k, value in kwargs.items():
             if k in ["updated_at", "created_at"]:
                 time_format: str = "%Y-%m-%dT%H:%M:%S.%f"
@@ -32,14 +32,14 @@ class BaseModel:
                 setattr(self, k, value)
 
     def save(self) -> None:
-      """Updates the updated_at and calls storage.save"""
+        """Updates the updated_at and calls storage save method"""
         self.updated_at = datetime.datetime.now()
         models.storage.save()
 
     def to_dict(self) -> dict:
         """returns a dictionary containing all keys/values of
             attributes and class name"""
-        instance_dict = self.__dict__
+        instance_dict = self.__dict__.copy()
         instance_dict["__class__"] = self.__class__.__name__
         instance_dict["created_at"] = self.created_at.isoformat()
         instance_dict["updated_at"] = self.updated_at.isoformat()
