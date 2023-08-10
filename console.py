@@ -58,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
 
         key = line.split()[0] + "." + line.split()[1]
         storage.delete(key)
-        (storage.all()[key]).save()
+        storage.save()
 
     def do_all(self, line) -> None:
         """Prints all string representation of all instances
@@ -93,7 +93,8 @@ class HBNBCommand(cmd.Cmd):
         storage.update(key, split_line[2], split_line[3])
         (storage.all()[key]).save()
 
-    def _split_line(self, line) -> list:
+    @staticmethod
+    def _split_line(line) -> list:
         """Split the line and Return a list of arguments"""
         split_line = re.findall(r'[^"\s]+|".*?"', line)
         split_line = [
@@ -112,7 +113,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return "exit"
 
-    def _check_id(self, line) -> str:
+    @staticmethod
+    def _check_id(line) -> str:
         """Checks if the id is existed"""
         try:
             class_id = line.split()[1]
@@ -126,7 +128,8 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return "exit"
 
-    def _check_attribute_and_value(self, line) -> str:
+    @staticmethod
+    def _check_attribute_and_value(line) -> str:
         """Checks attribute snd value are existed"""
         try:
             line.split()[2]
