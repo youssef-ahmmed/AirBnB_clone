@@ -229,7 +229,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_EOF(self, line) -> bool:
-        """EOF command to exit the program\n"""
+        """EOF command to exit the program"""
         print("")
         return True
 
