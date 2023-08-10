@@ -29,10 +29,12 @@ class FileStorage:
         self.__objects[obj_key] = obj
 
     def delete(self, key) -> None:
+        """Deletes an object from __objects dict"""
         del self.__objects[key]
 
-    def update(self, key, value) -> None:
-        self.__objects[key] = value
+    def update(self, key, attribute_name, value) -> None:
+        """Updates an object of __objects dict"""
+        setattr(self.__objects[key], attribute_name, value)
 
     def save(self) -> None:
         """Serializes __objects to the JSON file"""

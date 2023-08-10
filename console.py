@@ -2,6 +2,7 @@
 """Defines the entry point of the command interpreter"""
 
 import cmd
+import re
 
 from models import storage
 from models.base_model import BaseModel
@@ -20,48 +21,46 @@ class HBNBCommand(cmd.Cmd):
     class_names = ["BaseModel", "User", "Amenity",
                    "City", "Review", "Place", "State"]
 
-    def emptyline(self):
+    def emptyline(self) -> None:
         """Add new line when pressing enter"""
         print("", end="")
 
-    def do_create(self, line):
+    def do_create(self, line) -> None:
         """Creates a new instance of a given class"""
-        if not line:
-            print("** class name missing **")
-            return
-        class_name = line.split()[0]
-        if class_name not in self.class_names:
-            print("** class doesn't exist **")
+        if self._check_class(line) == "exit":
             return
 
-        obj = eval(class_name)()
+        obj = eval(line.split()[0])()
         obj.save()
         print(obj.id)
 
-    def do_show(self, line):
+    def do_show(self, line) -> None:
         """Prints the string representation of an
             instance based on the class name and id"""
-        if not line:
-            print("** class name missing **")
-            return
-        class_name = line.split()[0]
-        if class_name not in self.class_names:
-            print("** class doesn't exist **")
-            return
-        try:
-            class_id = line.split()[1]
-        except IndexError:
-            print("** instance id missing **")
+        if self._check_class(line) == "exit":
             return
 
-        key = class_name + "." + class_id
-        instance_dict = storage.all()
-        if key not in instance_dict.keys():
-            print("** no instance found **")
+        if self._check_id(line) == "exit":
             return
+
+        key = line.split()[0] + "." + line.split()[1]
+        instance_dict = storage.all()
         print(instance_dict[key])
 
-    def do_all(self, line):
+    def do_destroy(self, line) -> None:
+        """Deletes an instance based on the class name and id"""
+
+        if self._check_class(line) == "exit":
+            return
+
+        if self._check_id(line) == "exit":
+            return
+
+        key = line.split()[0] + "." + line.split()[1]
+        storage.delete(key)
+        (storage.all()[key]).save()
+
+    def do_all(self, line) -> None:
         """Prints all string representation of all instances
             based or not on the class name"""
         if line and line.split()[0] not in self.class_names:
@@ -76,22 +75,99 @@ class HBNBCommand(cmd.Cmd):
 
         print(list_of_str)
 
-    def help_create(self):
+    def do_update(self, line) -> None:
+        """Updates an instance based on the class name
+        and id by adding or updating attribute"""
+
+        if self._check_class(line) == "exit":
+            return
+
+        if self._check_id(line) == "exit":
+            return
+
+        if self._check_attribute_and_value(line) == "exit":
+            return
+
+        split_line = self._split_line(line)
+        key = split_line[0] + "." + split_line[1]
+        storage.update(key, split_line[2], split_line[3])
+        (storage.all()[key]).save()
+
+    def _split_line(self, line) -> list:
+        """Split the line and Return a list of arguments"""
+        split_line = re.findall(r'[^"\s]+|".*?"', line)
+        split_line = [
+            part.strip('"') if part.startswith('"') else part
+            for part in split_line
+        ]
+        return split_line
+
+    def _check_class(self, line) -> str:
+        """"Checks if the class is existed"""
+        if not line:
+            print("** class name missing **")
+            return "exit"
+
+        if line.split()[0] not in self.class_names:
+            print("** class doesn't exist **")
+            return "exit"
+
+    def _check_id(self, line) -> str:
+        """Checks if the id is existed"""
+        try:
+            class_id = line.split()[1]
+        except IndexError:
+            print("** instance id missing **")
+            return "exit"
+
+        key = line.split()[0] + "." + class_id
+        instance_dict = storage.all()
+        if key not in instance_dict.keys():
+            print("** no instance found **")
+            return "exit"
+
+    def _check_attribute_and_value(self, line) -> str:
+        """Checks attribute snd value are existed"""
+        try:
+            line.split()[2]
+        except IndexError:
+            print("** attribute name missing **")
+            return "exit"
+
+        try:
+            line.split()[3]
+        except IndexError:
+            print("** value missing **")
+            return "exit"
+
+    def help_create(self) -> None:
+        """help create function"""
         print("Creates a new instance of a given class\n")
 
-    def help_show(self):
+    def help_show(self) -> None:
+        """help show function"""
         print("Prints the string representation of an"
               "instance based on the class name and id\n")
 
-    def help_all(self):
+    def help_destroy(self) -> None:
+        """help destroy function"""
+        print("Deletes an instance based on the class name and id\n")
+
+    def help_all(self) -> None:
+        """help all function"""
         print("Prints all string representation of all instances "
               "based or not on the class name\n")
 
-    def do_quit(self, line):
+    def help_update(self) -> None:
+        """help update function"""
+        print("Updates an instance based on the class name "
+              "and id by adding or updating attribute\n")
+
+    def do_quit(self, line) -> bool:
         """Quit command to exit the program\n"""
         return True
 
-    def do_EOF(self, line):
+    def do_EOF(self, line) -> bool:
         """EOF command to exit the program\n"""
         return True
 
