@@ -34,6 +34,20 @@ class HBNBCommand(cmd.Cmd):
         obj.save()
         print(obj.id)
 
+    def do_count(self, line) -> None:
+        """Count existence of a given class"""
+        if self._check_class(line) == "exit":
+            return
+
+        count: int = 0
+        instance_dict = storage.all()
+
+        for key in instance_dict.keys():
+            if key.startswith(line):
+                count += 1
+
+        print(count)
+
     def do_show(self, line) -> None:
         """Prints the string representation of an
             instance based on the class name and id"""
@@ -147,6 +161,10 @@ class HBNBCommand(cmd.Cmd):
         """help create function"""
         print("Creates a new instance of a given class\n")
 
+    def help_count(self) -> None:
+        """help count function"""
+        print("Retrieve the number of instances of a class\n")
+
     def help_show(self) -> None:
         """help show function"""
         print("Prints the string representation of an"
@@ -166,12 +184,20 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an instance based on the class name "
               "and id by adding or updating attribute\n")
 
+    def help_quit(self) -> None:
+        """help quit function"""
+        print("Quit command to exit the program\n")
+
+    def help_EOF(self) -> None:
+        """help EOF command"""
+        print("EOF command to exit the program\n")
+
     def do_quit(self, line) -> bool:
-        """Quit command to exit the program\n"""
+        """Quit command to exit the program"""
         return True
 
     def do_EOF(self, line) -> bool:
-        """EOF command to exit the program\n"""
+        """EOF command to exit the program"""
         return True
 
 
