@@ -3,6 +3,7 @@
 
 import cmd
 import re
+from typing import List, Dict
 
 from models import storage
 from models.base_model import BaseModel
@@ -18,12 +19,40 @@ class HBNBCommand(cmd.Cmd):
     """Defines command line interpreter"""
 
     prompt: str = "(hbnb) "
-    class_names = ["BaseModel", "User", "Amenity",
-                   "City", "Review", "Place", "State"]
+    class_names: List[str] = ["BaseModel", "User", "Amenity",
+                              "City", "Review", "Place", "State"]
+    commands: dict = {"all": "do_all", "count": "do_count", "show": "do_show",
+                      "destroy": "do_destroy", "update": "do_update"}
 
     def emptyline(self) -> None:
         """Add new line when pressing enter"""
         print("", end="")
+
+    def default(self, line: str) -> None:
+        """Called on an input line when the command prefix is not recognized"""
+        class_name = re.search(r"\w+", line)
+        if class_name:
+            class_name = class_name.group()
+        func = re.search(r"(?<=\.)\w+(?=\()", line)
+        if func:
+            func = func.group()
+
+        if (class_name not in self.class_names or
+                func not in self.commands.keys()):
+            self.stdout.write('*** Unknown syntax: %s\n' % line)
+            return
+
+        func_args = re.search(r"(?<=\().(?P<args>.*?)(?=\))", line)
+        func_args_str = ""
+        if func_args:
+            func_args = func_args.group()
+            func_args_str = " ".join(func_args.replace('"', "")
+                                     .replace("'", "")
+                                     .replace(", ", ",")
+                                     .split(","))
+
+        func_args_str = class_name + " " + func_args_str
+        getattr(self, self.commands[func])(func_args_str)
 
     def do_create(self, line) -> None:
         """Creates a new instance of a given class"""
@@ -172,6 +201,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line) -> bool:
         """EOF command to exit the program\n"""
+        print("")
         return True
 
 
