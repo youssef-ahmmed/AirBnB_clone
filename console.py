@@ -4,7 +4,7 @@
 import ast
 import cmd
 import re
-from typing import List, Dict
+from typing import List
 
 from models import storage
 from models.base_model import BaseModel
@@ -226,46 +226,56 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return "exit"
 
-    def help_create(self) -> None:
+    @staticmethod
+    def help_create() -> None:
         """help create function"""
         print("Creates a new instance of a given class\n")
 
-    def help_count(self) -> None:
+    @staticmethod
+    def help_count() -> None:
         """help count function"""
         print("Retrieve the number of instances of a class\n")
 
-    def help_show(self) -> None:
+    @staticmethod
+    def help_show() -> None:
         """help show function"""
         print("Prints the string representation of an"
               "instance based on the class name and id\n")
 
-    def help_destroy(self) -> None:
+    @staticmethod
+    def help_destroy() -> None:
         """help destroy function"""
         print("Deletes an instance based on the class name and id\n")
 
-    def help_all(self) -> None:
+    @staticmethod
+    def help_all() -> None:
         """help all function"""
         print("Prints all string representation of all instances "
               "based or not on the class name\n")
 
-    def help_update(self) -> None:
+    @staticmethod
+    def help_update() -> None:
         """help update function"""
         print("Updates an instance based on the class name "
               "and id by adding or updating attribute\n")
 
-    def help_quit(self) -> None:
+    @staticmethod
+    def help_quit() -> None:
         """help quit function"""
         print("Quit command to exit the program\n")
 
-    def help_EOF(self) -> None:
+    @staticmethod
+    def help_EOF() -> None:
         """help EOF command"""
         print("EOF command to exit the program\n")
 
-    def do_quit(self, line) -> bool:
+    @staticmethod
+    def do_quit(line) -> bool:
         """Quit command to exit the program"""
         return True
 
-    def do_EOF(self, line) -> bool:
+    @staticmethod
+    def do_EOF(line) -> bool:
         """EOF command to exit the program"""
         print("")
         return True
