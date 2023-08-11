@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Defines the entry point of the command interpreter"""
 
+import ast
 import cmd
 import re
 from typing import List, Dict
@@ -131,6 +132,9 @@ class HBNBCommand(cmd.Cmd):
         if self._check_id(line) == "exit":
             return
 
+        if self._handle_dict(line) == "exit":
+            return
+
         if self._check_attribute_and_value(line) == "exit":
             return
 
@@ -173,6 +177,39 @@ class HBNBCommand(cmd.Cmd):
         if key not in instance_dict.keys():
             print("** no instance found **")
             return "exit"
+
+    def _handle_dict(self, line) -> str:
+        """Handle dictionary representation"""
+        dict_repr = self._check_dict_repr_type(line)
+        if not dict_repr:
+            return "not exit"
+
+        forbidden_attributes = ["updated_at", "created_at", "id"]
+        obj_key = line.split()[0] + '.' + line.split()[1]
+        for key, val in dict_repr.items():
+            if key in forbidden_attributes:
+                continue
+            storage.update(obj_key, key, val)
+        (storage.all()[obj_key]).save()
+
+        return "exit"
+
+    @staticmethod
+    def _check_dict_repr_type(line) -> dict:
+        """Check type of dict and convert it form string"""
+        match = re.search(r'{.*}', line)
+        if not match:
+            return {}
+
+        dict_str = match.group()
+        try:
+            dict_repr = ast.literal_eval(dict_str)
+            if type(dict_repr) != dict:
+                return {}
+        except (ValueError, SyntaxError):
+            return {}
+
+        return dict_repr
 
     @staticmethod
     def _check_attribute_and_value(line) -> str:
