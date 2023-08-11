@@ -2,6 +2,7 @@
 """Defines FileStorage module"""
 import json
 import os
+import ast
 
 from models.base_model import BaseModel
 from models.user import User
@@ -32,9 +33,13 @@ class FileStorage:
         """Deletes an object from __objects dict"""
         del self.__objects[key]
 
-    def update(self, key, attribute_name, value) -> None:
+    def update(self, key, attribute_name, attribute_value) -> None:
         """Updates an object of __objects dict"""
-        setattr(self.__objects[key], attribute_name, value)
+        try:
+            attribute_value = ast.literal_eval(attribute_value)
+        except (ValueError, SyntaxError):
+            pass
+        setattr(self.__objects[key], attribute_name, attribute_value)
 
     def save(self) -> None:
         """Serializes __objects to the JSON file"""
