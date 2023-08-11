@@ -51,7 +51,10 @@ class HBNBCommand(cmd.Cmd):
                                      .replace(", ", ",")
                                      .split(","))
 
-        func_args_str = class_name + " " + func_args_str
+        if func_args_str == "":
+            func_args_str = class_name
+        else:
+            func_args_str = class_name + " " + func_args_str
         getattr(self, self.commands[func])(func_args_str)
 
     def do_create(self, line) -> None:
