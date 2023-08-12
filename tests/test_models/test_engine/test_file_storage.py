@@ -19,27 +19,34 @@ class TestFileStorageInstantiation(unittest.TestCase):
     """Unittests for module instantiation"""
 
     def test_file_storage_type(self):
+        """test_file_storage_type"""
         self.assertEqual(FileStorage, type(FileStorage()))
 
     def test_file_storage_with_args(self):
+        """test_file_storage_with_args"""
         with self.assertRaises(TypeError):
             FileStorage(None)
 
     def test_file_path_attribute_is_private(self):
+        """test_file_path_attribute_is_private"""
         with self.assertRaises(AttributeError):
             FileStorage().__file_path
 
     def test_objects_attribute_is_private(self):
+        """test_objects_attribute_is_private"""
         with self.assertRaises(AttributeError):
             FileStorage().__objects
 
     def test_type_of_private_file_path(self):
+        """test_type_of_private_file_path"""
         self.assertEqual(str, type(FileStorage._FileStorage__file_path))
 
     def test_type_of_private_objects(self):
+        """test_type_of_private_objects"""
         self.assertEqual(dict, type(FileStorage._FileStorage__objects))
 
     def test_storage_initializes(self):
+        """test_storage_initializes"""
         self.assertEqual(type(storage), FileStorage)
 
 
@@ -48,6 +55,7 @@ class TestFileStorageAll(unittest.TestCase):
 
     @classmethod
     def setUp(cls):
+        """Set up test methods"""
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -55,6 +63,7 @@ class TestFileStorageAll(unittest.TestCase):
 
     @classmethod
     def tearDown(cls):
+        """Tear down test methods"""
         try:
             os.remove("file.json")
         except IOError:
@@ -66,16 +75,20 @@ class TestFileStorageAll(unittest.TestCase):
         FileStorage._FileStorage__objects = {}
 
     def test_all_return_type(self):
+        """test_all_return_type"""
         self.assertEqual(dict, type(FileStorage().all()))
 
     def test_all_with_args(self):
+        """test_all_with_args"""
         with self.assertRaises(TypeError):
             FileStorage().all(None)
 
     def test_all_without_creating_objects(self):
+        """test_all_without_creating_objects"""
         self.assertEqual({}, FileStorage().all())
 
     def test_all_when_creating_different_objects(self):
+        """test_all_when_creating_different_objects"""
         obj1 = BaseModel()
         obj2 = User()
         obj3 = State()
@@ -92,6 +105,7 @@ class TestFileStorageNew(unittest.TestCase):
 
     @classmethod
     def setUp(cls):
+        """Set up test methods"""
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -99,6 +113,7 @@ class TestFileStorageNew(unittest.TestCase):
 
     @classmethod
     def tearDown(cls):
+        """Tear down test methods"""
         try:
             os.remove("file.json")
         except IOError:
@@ -110,20 +125,24 @@ class TestFileStorageNew(unittest.TestCase):
         FileStorage._FileStorage__objects = {}
 
     def test_new_with_args(self):
+        """test_new_with_args"""
         with self.assertRaises(TypeError):
             FileStorage().new(BaseModel(), 123)
 
     def test_new_with_none(self):
+        """test_new_with_none"""
         with self.assertRaises(AttributeError):
             FileStorage().new(None)
 
     def test_new_before_and_after_calling(self):
+        """test_new_before_and_after_calling"""
         obj = FileStorage()
         obj_dict = obj.all().copy()
         obj.new(User())
         self.assertNotEqual(obj_dict, obj.all())
 
     def test_new_with_base_model(self):
+        """test_new_with_base_model"""
         obj1 = BaseModel()
         obj2 = FileStorage()
         obj2.new(obj1)
@@ -132,6 +151,7 @@ class TestFileStorageNew(unittest.TestCase):
         self.assertIn(key, obj2.all().keys())
 
     def test_new_with_amenity(self):
+        """test_new_with_amenity"""
         obj1 = Amenity()
         obj2 = FileStorage()
         obj2.new(obj1)
@@ -140,6 +160,7 @@ class TestFileStorageNew(unittest.TestCase):
         self.assertIn(key, obj2.all().keys())
 
     def test_new_with_city(self):
+        """test_new_with_city"""
         obj1 = City()
         obj2 = FileStorage()
         obj2.new(obj1)
@@ -148,6 +169,7 @@ class TestFileStorageNew(unittest.TestCase):
         self.assertIn(key, obj2.all().keys())
 
     def test_new_with_place(self):
+        """test_new_with_place"""
         obj1 = Place()
         obj2 = FileStorage()
         obj2.new(obj1)
@@ -156,6 +178,7 @@ class TestFileStorageNew(unittest.TestCase):
         self.assertIn(key, obj2.all().keys())
 
     def test_new_with_review(self):
+        """test_new_with_review"""
         obj1 = Review()
         obj2 = FileStorage()
         obj2.new(obj1)
@@ -164,6 +187,7 @@ class TestFileStorageNew(unittest.TestCase):
         self.assertIn(key, obj2.all().keys())
 
     def test_new_with_state(self):
+        """test_new_with_state"""
         obj1 = State()
         obj2 = FileStorage()
         obj2.new(obj1)
@@ -172,6 +196,7 @@ class TestFileStorageNew(unittest.TestCase):
         self.assertIn(key, obj2.all().keys())
 
     def test_new_with_user(self):
+        """test_new_with_user"""
         obj1 = User()
         obj2 = FileStorage()
         obj2.new(obj1)
@@ -185,6 +210,7 @@ class TestFileStorageSave(unittest.TestCase):
 
     @classmethod
     def setUp(cls):
+        """Set up test methods"""
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -192,6 +218,7 @@ class TestFileStorageSave(unittest.TestCase):
 
     @classmethod
     def tearDown(cls):
+        """Tear down test methods"""
         try:
             os.remove("file.json")
         except IOError:
@@ -203,10 +230,12 @@ class TestFileStorageSave(unittest.TestCase):
         FileStorage._FileStorage__objects = {}
 
     def test_save_with_arg(self):
+        """test_save_with_arg"""
         with self.assertRaises(TypeError):
             FileStorage().save(None)
 
     def test_save_with_base_model(self):
+        """test_save_with_base_model"""
         obj = BaseModel()
         obj.save()
 
@@ -215,6 +244,7 @@ class TestFileStorageSave(unittest.TestCase):
             self.assertIn(key, file.read())
 
     def test_save_with_user(self):
+        """test_save_with_user"""
         obj = User()
         obj.save()
 
@@ -223,6 +253,7 @@ class TestFileStorageSave(unittest.TestCase):
             self.assertIn(key, file.read())
 
     def test_save_with_amenity(self):
+        """test_save_with_amenity"""
         obj = Amenity()
         obj.save()
 
@@ -231,6 +262,7 @@ class TestFileStorageSave(unittest.TestCase):
             self.assertIn(key, file.read())
 
     def test_save_with_city(self):
+        """test_save_with_city"""
         obj = City()
         obj.save()
 
@@ -239,6 +271,7 @@ class TestFileStorageSave(unittest.TestCase):
             self.assertIn(key, file.read())
 
     def test_save_with_place(self):
+        """test_save_with_place"""
         obj = Place()
         obj.save()
 
@@ -247,6 +280,7 @@ class TestFileStorageSave(unittest.TestCase):
             self.assertIn(key, file.read())
 
     def test_save_with_review(self):
+        """test_save_with_review"""
         obj = Review()
         obj.save()
 
@@ -255,6 +289,7 @@ class TestFileStorageSave(unittest.TestCase):
             self.assertIn(key, file.read())
 
     def test_save_with_state(self):
+        """test_save_with_state"""
         obj = State()
         obj.save()
 
@@ -267,10 +302,12 @@ class TestFileStorageReload(unittest.TestCase):
     """Unittests for reload method"""
 
     def test_save_with_arg(self):
+        """test_save_with_arg"""
         with self.assertRaises(TypeError):
             FileStorage().reload(None)
 
     def test_reload_with_base_model(self):
+        """test_reload_with_base_model"""
         obj = BaseModel()
         obj.save()
         storage.reload()
@@ -278,6 +315,7 @@ class TestFileStorageReload(unittest.TestCase):
         self.assertIn(key, storage.all().keys())
 
     def test_reload_with_amenity(self):
+        """test_reload_with_amenity"""
         obj = Amenity()
         obj.save()
         storage.reload()
@@ -285,6 +323,7 @@ class TestFileStorageReload(unittest.TestCase):
         self.assertIn(key, storage.all().keys())
 
     def test_reload_with_city(self):
+        """test_reload_with_city"""
         obj = City()
         obj.save()
         storage.reload()
@@ -292,6 +331,7 @@ class TestFileStorageReload(unittest.TestCase):
         self.assertIn(key, storage.all().keys())
 
     def test_reload_with_place(self):
+        """test_reload_with_place"""
         obj = Place()
         obj.save()
         storage.reload()
@@ -299,6 +339,7 @@ class TestFileStorageReload(unittest.TestCase):
         self.assertIn(key, storage.all().keys())
 
     def test_reload_with_review(self):
+        """test_reload_with_review"""
         obj = Review()
         obj.save()
         storage.reload()
@@ -306,6 +347,7 @@ class TestFileStorageReload(unittest.TestCase):
         self.assertIn(key, storage.all().keys())
 
     def test_reload_with_state(self):
+        """test_reload_with_state"""
         obj = State()
         obj.save()
         storage.reload()
@@ -313,6 +355,7 @@ class TestFileStorageReload(unittest.TestCase):
         self.assertIn(key, storage.all().keys())
 
     def test_reload_with_user(self):
+        """test_reload_with_user"""
         obj = User()
         obj.save()
         storage.reload()
