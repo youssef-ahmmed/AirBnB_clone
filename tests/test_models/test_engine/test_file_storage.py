@@ -127,43 +127,57 @@ class TestFileStorageNew(unittest.TestCase):
         obj1 = BaseModel()
         obj2 = FileStorage()
         obj2.new(obj1)
+        key = "BaseModel." + obj1.id
         self.assertIn(obj1, obj2.all().values())
+        self.assertIn(key, obj2.all().keys())
 
     def test_new_with_amenity(self):
         obj1 = Amenity()
         obj2 = FileStorage()
         obj2.new(obj1)
+        key = "Amenity." + obj1.id
         self.assertIn(obj1, obj2.all().values())
+        self.assertIn(key, obj2.all().keys())
 
     def test_new_with_city(self):
         obj1 = City()
         obj2 = FileStorage()
         obj2.new(obj1)
+        key = "City." + obj1.id
         self.assertIn(obj1, obj2.all().values())
+        self.assertIn(key, obj2.all().keys())
 
     def test_new_with_place(self):
         obj1 = Place()
         obj2 = FileStorage()
         obj2.new(obj1)
+        key = "Place." + obj1.id
         self.assertIn(obj1, obj2.all().values())
+        self.assertIn(key, obj2.all().keys())
 
     def test_new_with_review(self):
         obj1 = Review()
         obj2 = FileStorage()
         obj2.new(obj1)
+        key = "Review." + obj1.id
         self.assertIn(obj1, obj2.all().values())
+        self.assertIn(key, obj2.all().keys())
 
     def test_new_with_state(self):
         obj1 = State()
         obj2 = FileStorage()
         obj2.new(obj1)
+        key = "State." + obj1.id
         self.assertIn(obj1, obj2.all().values())
+        self.assertIn(key, obj2.all().keys())
 
     def test_new_with_user(self):
         obj1 = User()
         obj2 = FileStorage()
         obj2.new(obj1)
+        key = "User." + obj1.id
         self.assertIn(obj1, obj2.all().values())
+        self.assertIn(key, obj2.all().keys())
 
 
 class TestFileStorageSave(unittest.TestCase):
