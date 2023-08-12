@@ -123,8 +123,44 @@ class TestFileStorageNew(unittest.TestCase):
         obj.new(User())
         self.assertNotEqual(obj_dict, obj.all())
 
-    def test_new_with_object(self):
+    def test_new_with_base_model(self):
         obj1 = BaseModel()
+        obj2 = FileStorage()
+        obj2.new(obj1)
+        self.assertIn(obj1, obj2.all().values())
+
+    def test_new_with_amenity(self):
+        obj1 = Amenity()
+        obj2 = FileStorage()
+        obj2.new(obj1)
+        self.assertIn(obj1, obj2.all().values())
+
+    def test_new_with_city(self):
+        obj1 = City()
+        obj2 = FileStorage()
+        obj2.new(obj1)
+        self.assertIn(obj1, obj2.all().values())
+
+    def test_new_with_place(self):
+        obj1 = Place()
+        obj2 = FileStorage()
+        obj2.new(obj1)
+        self.assertIn(obj1, obj2.all().values())
+
+    def test_new_with_review(self):
+        obj1 = Review()
+        obj2 = FileStorage()
+        obj2.new(obj1)
+        self.assertIn(obj1, obj2.all().values())
+
+    def test_new_with_state(self):
+        obj1 = State()
+        obj2 = FileStorage()
+        obj2.new(obj1)
+        self.assertIn(obj1, obj2.all().values())
+
+    def test_new_with_user(self):
+        obj1 = User()
         obj2 = FileStorage()
         obj2.new(obj1)
         self.assertIn(obj1, obj2.all().values())
@@ -212,6 +248,14 @@ class TestFileStorageSave(unittest.TestCase):
             key = "State." + obj.id
             self.assertIn(key, file.read())
 
+
+class TestFileStorageReload(unittest.TestCase):
+    """Unittests for reload method"""
+
+    def test_save_with_arg(self):
+        with self.assertRaises(TypeError):
+            FileStorage().reload(None)
+
     def test_reload_with_base_model(self):
         obj = BaseModel()
         obj.save()
@@ -261,13 +305,6 @@ class TestFileStorageSave(unittest.TestCase):
         key = "User." + obj.id
         self.assertIn(key, storage.all().keys())
 
-
-class TestFileStorageReload(unittest.TestCase):
-    """Unittests for reload method"""
-
-    def test_save_with_arg(self):
-        with self.assertRaises(TypeError):
-            FileStorage().reload(None)
 
 if __name__ == '__main__':
     unittest.main()
