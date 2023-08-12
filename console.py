@@ -34,6 +34,7 @@ class HBNBCommand(cmd.Cmd):
         class_name = re.search(r"\w+", line)
         if class_name:
             class_name = class_name.group()
+
         func = re.search(r"(?<=\.)\w+(?=\()", line)
         if func:
             func = func.group()
@@ -145,6 +146,9 @@ class HBNBCommand(cmd.Cmd):
             return
 
         split_line = self._split_line(line)
+        if split_line[2].startswith("(") or split_line[2].startswith("["):
+            return
+
         key = split_line[0] + "." + split_line[1]
         storage.update(key, split_line[2], split_line[3])
         (storage.all()[key]).save()
