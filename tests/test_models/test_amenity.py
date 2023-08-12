@@ -13,6 +13,24 @@ from models.amenity import Amenity
 class TestAmenityInstantiation(unittest.TestCase):
     """Unittest for Amenity Instantiation"""
 
+    @classmethod
+    def setUp(cls):
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
+
+    @classmethod
+    def tearDown(cls):
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
+
     def test_Amenity_type(self):
         self.assertEqual(Amenity, type(Amenity()))
 

@@ -13,6 +13,24 @@ from models.review import Review
 class TestReviewInstantiation(unittest.TestCase):
     """Unittest for Review Instantiation"""
 
+    @classmethod
+    def setUp(cls):
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
+
+    @classmethod
+    def tearDown(cls):
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
+
     def test_Review_type(self):
         self.assertEqual(Review, type(Review()))
 

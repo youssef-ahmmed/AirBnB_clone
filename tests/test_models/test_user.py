@@ -13,6 +13,24 @@ from models.user import User
 class TestUserInstantiation(unittest.TestCase):
     """Unittest for User Instantiation"""
 
+    @classmethod
+    def setUp(cls):
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
+
+    @classmethod
+    def tearDown(cls):
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
+
     def test_user_type(self):
         self.assertEqual(User, type(User()))
 
