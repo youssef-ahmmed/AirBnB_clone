@@ -1,10 +1,8 @@
 """Defines unittests for FileStorage class"""
 
-import datetime
 import os
 import unittest
-import uuid
-from time import sleep
+
 
 from models.engine.file_storage import FileStorage
 from models import storage
@@ -270,9 +268,6 @@ class TestFileStorageReload(unittest.TestCase):
     def test_save_with_arg(self):
         with self.assertRaises(TypeError):
             FileStorage().reload(None)
-
-
-
 
 if __name__ == '__main__':
     unittest.main()
