@@ -184,7 +184,7 @@ class HBNBCommand(cmd.Cmd):
         if not dict_repr:
             return "not exit"
         if len(dict_repr) == 1:
-            print("** attribute name missing **")
+            print("** value missing **")
             return "exit"
 
         forbidden_attributes = ["updated_at", "created_at", "id"]
@@ -220,6 +220,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             line.split()[2]
         except IndexError:
+            print("** attribute name missing **")
             return "exit"
 
         try:
