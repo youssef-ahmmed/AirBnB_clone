@@ -300,6 +300,15 @@ class TestBaseModelToDict(unittest.TestCase):
         obj2 = BaseModel(**obj1_dict)
         self.assertEqual(obj1_dict, obj2.to_dict())
 
+    def test_contrast_to_dict_dunder_dict(self):
+        obj = BaseModel()
+        self.assertNotEqual(obj.to_dict(), obj.__dict__)
+
+    def test_to_dict_with_arg(self):
+        bm = BaseModel()
+        with self.assertRaises(TypeError):
+            bm.to_dict(None)
+
 
 class TestBaseModelStr(unittest.TestCase):
     """Unittests for __str__ method"""
