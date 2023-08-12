@@ -183,6 +183,9 @@ class HBNBCommand(cmd.Cmd):
         dict_repr = self._check_dict_repr_type(line)
         if not dict_repr:
             return "not exit"
+        if len(dict_repr) == 1:
+            print("** attribute name missing **")
+            return "exit"
 
         forbidden_attributes = ["updated_at", "created_at", "id"]
         obj_key = line.split()[0] + '.' + line.split()[1]
@@ -197,7 +200,7 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def _check_dict_repr_type(line) -> dict:
         """Check type of dict and convert it form string"""
-        match = re.search(r'{.*}', line)
+        match = re.search(r'\[(.*?)]\s*|({.*?})\s*|(\(.+?\))', line)
         if not match:
             return {}
 
@@ -205,7 +208,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             dict_repr = ast.literal_eval(dict_str)
             if type(dict_repr) != dict:
-                return {}
+                return {"exit": 1}
         except (ValueError, SyntaxError):
             return {}
 
