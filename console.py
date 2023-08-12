@@ -47,10 +47,16 @@ class HBNBCommand(cmd.Cmd):
         func_args_str = ""
         if func_args:
             func_args = func_args.group()
-            func_args_str = " ".join(func_args.replace('"', "")
+            func_args = func_args.split('{')
+            func_args_str = " ".join(func_args[0].replace('"', "")
                                      .replace("'", "")
                                      .replace(", ", ",")
                                      .split(","))
+
+        try:
+            func_args_str = func_args_str + '{' + func_args[1]
+        except IndexError:
+            pass
 
         if func_args_str == "":
             func_args_str = class_name
