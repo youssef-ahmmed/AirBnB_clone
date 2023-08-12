@@ -220,7 +220,6 @@ class HBNBCommand(cmd.Cmd):
         try:
             line.split()[2]
         except IndexError:
-            print("** attribute name missing **")
             return "exit"
 
         try:
