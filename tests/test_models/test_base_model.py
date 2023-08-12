@@ -1,12 +1,12 @@
 """Defines unittests for BaseModel class"""
 
-from models.base_model import BaseModel
-
-import unittest
 import datetime
-import uuid
 import os
+import unittest
+import uuid
 from time import sleep
+
+from models.base_model import BaseModel
 
 
 class TestBaseModelInstantiation(unittest.TestCase):
@@ -50,12 +50,14 @@ class TestBaseModelInstantiation(unittest.TestCase):
     def test_created_at_when_changing_it(self):
         obj = BaseModel()
         obj.created_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
-        self.assertEqual(obj.created_at, datetime.datetime(2017, 9, 28, 21, 5, 54, 119427))
+        self.assertEqual(obj.created_at,
+                         datetime.datetime(2017, 9, 28, 21, 5, 54, 119427))
 
     def test_updated_at_when_changing_it(self):
         obj = BaseModel()
         obj.updated_at = datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)
-        self.assertEqual(obj.updated_at, datetime.datetime(2017, 9, 28, 21, 5, 54, 119427))
+        self.assertEqual(obj.updated_at,
+                         datetime.datetime(2017, 9, 28, 21, 5, 54, 119427))
 
     def test_creating_new_str_attr_from_instance(self):
         obj = BaseModel()
@@ -150,11 +152,13 @@ class TestBaseModelInstantiation(unittest.TestCase):
 
     def test_instantiation_with_datetime_type_for_created_at_kwargs(self):
         with self.assertRaises(TypeError):
-            BaseModel(created_at=datetime.datetime(2017, 9, 28, 21, 7, 51, 973308))
+            BaseModel(created_at=datetime.
+                      datetime(2017, 9, 28, 21, 7, 51, 973308))
 
     def test_instantiation_with_datetime_type_for_updated_at_kwargs(self):
         with self.assertRaises(TypeError):
-            BaseModel(updated_at=datetime.datetime(2017, 9, 28, 21, 7, 51, 973308))
+            BaseModel(updated_at=datetime.
+                      datetime(2017, 9, 28, 21, 7, 51, 973308))
 
     def test_id_when_instantiating_with_dict(self):
         specific_time = datetime.datetime(2017, 9, 28, 21, 7, 51, 973308)
@@ -263,12 +267,14 @@ class TestBaseModelToDict(unittest.TestCase):
     def test_to_dict_when_changing_created_at(self):
         obj = BaseModel()
         obj.created_at = datetime.datetime(2017, 9, 28, 21, 3, 54, 52298)
-        self.assertEqual('2017-09-28T21:03:54.052298', obj.to_dict()["created_at"])
+        self.assertEqual('2017-09-28T21:03:54.052298',
+                         obj.to_dict()["created_at"])
 
     def test_to_dict_when_changing_updated_at(self):
         obj = BaseModel()
         obj.updated_at = datetime.datetime(2017, 9, 28, 21, 3, 54, 52298)
-        self.assertEqual('2017-09-28T21:03:54.052298', obj.to_dict()["updated_at"])
+        self.assertEqual('2017-09-28T21:03:54.052298',
+                         obj.to_dict()["updated_at"])
 
     def test_to_dict_id_to_create_another_instance(self):
         obj1 = BaseModel()
@@ -318,8 +324,11 @@ class TestBaseModelStr(unittest.TestCase):
         obj.id = "1234"
         obj.created_at = datetime.datetime(2017, 9, 28, 21, 3, 54, 52298)
         obj.updated_at = datetime.datetime(2017, 9, 28, 21, 3, 54, 52298)
-        result = "[BaseModel] (1234) {'id': '1234', 'created_at': datetime.datetime(2017, 9, 28, 21, 3, 54, 52298), " \
-                 "'updated_at': datetime.datetime(2017, 9, 28, 21, 3, 54, 52298)}"
+        result = "[BaseModel] (1234) {'id': '1234', " \
+                 "'created_at': datetime." \
+                 "datetime(2017, 9, 28, 21, 3, 54, 52298), " \
+                 "'updated_at': datetime." \
+                 "datetime(2017, 9, 28, 21, 3, 54, 52298)}"
         self.assertEqual(str(obj), result)
 
 
