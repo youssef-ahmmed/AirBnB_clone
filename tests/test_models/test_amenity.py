@@ -31,10 +31,10 @@ class TestAmenityInstantiation(unittest.TestCase):
         except IOError:
             pass
 
-    def test_Amenity_type(self):
+    def test_amenity_type(self):
         self.assertEqual(Amenity, type(Amenity()))
 
-    def test_Amenity_parent(self):
+    def test_amenity_parent(self):
         self.assertIsInstance(Amenity(), BaseModel)
 
     def test_id_is_str(self):

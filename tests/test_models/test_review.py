@@ -31,10 +31,10 @@ class TestReviewInstantiation(unittest.TestCase):
         except IOError:
             pass
 
-    def test_Review_type(self):
+    def test_review_type(self):
         self.assertEqual(Review, type(Review()))
 
-    def test_Review_parent(self):
+    def test_review_parent(self):
         self.assertIsInstance(Review(), BaseModel)
 
     def test_place_id_is_str(self):
