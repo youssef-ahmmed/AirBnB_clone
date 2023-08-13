@@ -41,6 +41,10 @@ class TestAmenityInstantiation(unittest.TestCase):
         """Test Amenity inheritance"""
         self.assertIsInstance(Amenity(), BaseModel)
 
+    def test_name_is_str(self):
+        """Test name is str"""
+        self.assertEqual(str, type(Amenity().name))
+
     def test_id_is_str(self):
         """Test id is of type string"""
         self.assertEqual(str, type(Amenity().id))
@@ -52,6 +56,10 @@ class TestAmenityInstantiation(unittest.TestCase):
     def test_updated_at_is_str(self):
         """Test updated_at is of type string"""
         self.assertEqual(datetime.datetime, type(Amenity().updated_at))
+
+    def test_name_default_value(self):
+        """Test name is str"""
+        self.assertEqual("", Amenity().name)
 
     def test_name_changing_value(self):
         """Test that change the name value"""
