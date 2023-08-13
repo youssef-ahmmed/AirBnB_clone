@@ -1664,6 +1664,188 @@ class TestHBNBCommandUpdate(unittest.TestCase):
             expected_output = "** value missing **"
             self.assertEqual(expected_output, f.getvalue().strip())
 
+    def test_update_base_model_with_attr(self):
+        obj = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update BaseModel {obj.id} name 'ys'")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_base_model_instance_by_class_name__with_attr(self):
+        obj = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"BaseModel.update({obj.id}, name, 'ys')")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_base_model_with_dict(self):
+        obj = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"update BaseModel {obj.id} {my_dict}")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_base_model_instance_by_class_name__with_dict(self):
+        obj = BaseModel()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"BaseModel.update({obj.id}, {my_dict})")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_amenity_with_attr(self):
+        obj = Amenity()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update Amenity {obj.id} name 'ys'")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_amenity_instance_by_class_name__with_attr(self):
+        obj = Amenity()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"Amenity.update({obj.id}, name, 'ys')")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_amenity_with_dict(self):
+        obj = Amenity()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"update Amenity {obj.id} {my_dict}")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_amenity_instance_by_class_name__with_dict(self):
+        obj = Amenity()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"Amenity.update({obj.id}, {my_dict})")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_city_with_attr(self):
+        obj = City()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update City {obj.id} name 'ys'")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_city_instance_by_class_name__with_attr(self):
+        obj = City()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"City.update({obj.id}, name, 'ys')")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_city_with_dict(self):
+        obj = City()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"update City {obj.id} {my_dict}")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_city_instance_by_class_name__with_dict(self):
+        obj = City()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"City.update({obj.id}, {my_dict})")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_place_with_attr(self):
+        obj = Place()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update Place {obj.id} name 'ys'")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_place_instance_by_class_name__with_attr(self):
+        obj = Place()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"Place.update({obj.id}, name, 'ys')")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_place_with_dict(self):
+        obj = Place()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"update Place {obj.id} {my_dict}")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_place_instance_by_class_name__with_dict(self):
+        obj = Place()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"Place.update({obj.id}, {my_dict})")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_review_with_attr(self):
+        obj = Review()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update Review {obj.id} name 'ys'")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_review_instance_by_class_name__with_attr(self):
+        obj = Review()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"Review.update({obj.id}, name, 'ys')")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_review_with_dict(self):
+        obj = Review()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"update Review {obj.id} {my_dict}")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_review_instance_by_class_name__with_dict(self):
+        obj = Review()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"Review.update({obj.id}, {my_dict})")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_state_with_attr(self):
+        obj = State()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update State {obj.id} name 'ys'")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_state_instance_by_class_name__with_attr(self):
+        obj = State()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"State.update({obj.id}, name, 'ys')")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_state_with_dict(self):
+        obj = State()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"update State {obj.id} {my_dict}")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_state_instance_by_class_name__with_dict(self):
+        obj = State()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"State.update({obj.id}, {my_dict})")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_user_with_attr(self):
+        obj = User()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update User {obj.id} name 'ys'")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_user_instance_by_class_name__with_attr(self):
+        obj = User()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f"User.update({obj.id}, name, 'ys')")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_user_with_dict(self):
+        obj = User()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"update User {obj.id} {my_dict}")
+            self.assertEqual("ys", obj.__dict__["name"])
+
+    def test_update_user_instance_by_class_name__with_dict(self):
+        obj = User()
+        with patch('sys.stdout', new=StringIO()) as f:
+            my_dict = str({"name": "ys"})
+            HBNBCommand().onecmd(f"User.update({obj.id}, {my_dict})")
+            self.assertEqual("ys", obj.__dict__["name"])
+
 
 if __name__ == '__main__':
     unittest.main()
