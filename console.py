@@ -208,7 +208,8 @@ class HBNBCommand(cmd.Cmd):
         func = re.search(r"(?<=\.)\w+(?=\()", line)
         func = func.group() if func else None
 
-        if self._check_error_for_instance_by_name(func, class_name, line) == "exit":
+        if (self._check_error_for_instance_by_name(func, class_name, line)
+                == "exit"):
             return
 
         func_args = re.search(r"(?<=\().(?P<args>.*?)(?=\))", line)
@@ -223,7 +224,8 @@ class HBNBCommand(cmd.Cmd):
                                      .replace(", ", ",")
                                      .split(","))
 
-        func_args_str = class_name if not func_args_str else f"{class_name} {func_args_str}"
+        func_args_str = (class_name if not func_args_str
+                         else f"{class_name} {func_args_str}")
         getattr(self, self.commands[func])(func_args_str)
 
     def _check_error_for_instance_by_name(self, func, class_name, line):
