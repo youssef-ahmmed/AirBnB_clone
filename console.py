@@ -29,47 +29,6 @@ class HBNBCommand(cmd.Cmd):
         """Add new line when pressing enter"""
         print("", end="")
 
-    def default(self, line: str) -> None:
-        """Called on an input line when the command prefix is not recognized"""
-        class_name = re.search(r"\w+(?=\.)", line)
-        if class_name:
-            class_name = class_name.group()
-
-        func = re.search(r"(?<=\.)\w+(?=\()", line)
-        if func:
-            func = func.group()
-            if not class_name:
-                print("** class name missing **")
-                return
-
-        if (class_name not in self.class_names and
-                func not in self.commands.keys()):
-            self.stdout.write('*** Unknown syntax: %s\n' % line)
-            return
-
-        func_args = re.search(r"(?<=\().(?P<args>.*?)(?=\))", line)
-        func_args_str = ""
-        if func_args:
-            func_args = func_args.group()
-            match = re.search(r'\[(.*?)]\s*|({.*?})\s*|(\(.+?\))', func_args)
-            if match:
-                match = match.group()
-                func_args = (func_args.split(',')[0]).replace("'", "")\
-                    .replace('"', "")
-                func_args_str = class_name + " " + func_args + " " + match
-                getattr(self, self.commands[func])(func_args_str)
-                return
-            func_args_str = " ".join(func_args.replace('"', "")
-                                     .replace("'", "")
-                                     .replace(", ", ",")
-                                     .split(","))
-
-        if func_args_str == "":
-            func_args_str = class_name
-        else:
-            func_args_str = class_name + " " + func_args_str
-        getattr(self, self.commands[func])(func_args_str)
-
     def do_create(self, line) -> None:
         """Creates a new instance of a given class"""
         if self._check_class(line) == "exit":
@@ -198,9 +157,6 @@ class HBNBCommand(cmd.Cmd):
         dict_repr = self._check_dict_repr_type(line)
         if dict_repr == {}:
             return "not exit"
-        # if dict_repr == {"exit": 1}:
-        #     print("salma")
-        #     return "exit"
 
         forbidden_attributes = ["updated_at", "created_at", "id"]
         obj_key = line.split()[0] + '.' + line.split()[1]
@@ -242,6 +198,53 @@ class HBNBCommand(cmd.Cmd):
             line.split()[3]
         except IndexError:
             print("** value missing **")
+            return "exit"
+
+    def default(self, line: str) -> None:
+        """Called on an input line when the command prefix is not recognized"""
+        class_name = re.search(r"\w+(?=\.)", line)
+        class_name = class_name.group() if class_name else None
+
+        func = re.search(r"(?<=\.)\w+(?=\()", line)
+        func = func.group() if func else None
+
+        if self._check_error_for_instance_by_name(func, class_name, line) == "exit":
+            return
+
+        func_args = re.search(r"(?<=\().(?P<args>.*?)(?=\))", line)
+        func_args_str = ""
+        if func_args:
+            func_args = func_args.group()
+            if self._search_for_dict(class_name, func_args, func) == "exit":
+                return
+
+            func_args_str = " ".join(func_args.replace('"', "")
+                                     .replace("'", "")
+                                     .replace(", ", ",")
+                                     .split(","))
+
+        func_args_str = class_name if not func_args_str else f"{class_name} {func_args_str}"
+        getattr(self, self.commands[func])(func_args_str)
+
+    def _check_error_for_instance_by_name(self, func, class_name, line):
+        if func and not class_name:
+            print("** class name missing **")
+            return "exit"
+
+        if (class_name not in self.class_names
+                and
+                func not in self.commands.keys()):
+            self.stdout.write('*** Unknown syntax: %s\n' % line)
+            return "exit"
+
+    def _search_for_dict(self, class_name, func_args, func) -> str:
+        match = re.search(r'\[(.*?)]\s*|({.*?})\s*|(\(.+?\))', func_args)
+        if match:
+            match = match.group()
+            func_args = (func_args.split(',')[0]).replace("'", "") \
+                .replace('"', "")
+            func_args_str = class_name + " " + func_args + " " + match
+            getattr(self, self.commands[func])(func_args_str)
             return "exit"
 
     @staticmethod
