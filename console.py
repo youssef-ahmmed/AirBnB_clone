@@ -31,14 +31,18 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line: str) -> None:
         """Called on an input line when the command prefix is not recognized"""
-        class_name = re.search(r"\w+", line)
+        class_name = re.search(r"\w+(?=\.)", line)
         if class_name:
             class_name = class_name.group()
+
         func = re.search(r"(?<=\.)\w+(?=\()", line)
         if func:
             func = func.group()
+            if not class_name:
+                print("** class name missing **")
+                return
 
-        if (class_name not in self.class_names or
+        if (class_name not in self.class_names and
                 func not in self.commands.keys()):
             self.stdout.write('*** Unknown syntax: %s\n' % line)
             return
@@ -47,16 +51,18 @@ class HBNBCommand(cmd.Cmd):
         func_args_str = ""
         if func_args:
             func_args = func_args.group()
-            func_args = func_args.split('{')
-            func_args_str = " ".join(func_args[0].replace('"', "")
+            match = re.search(r'\[(.*?)]\s*|({.*?})\s*|(\(.+?\))', func_args)
+            if match:
+                match = match.group()
+                func_args = (func_args.split(',')[0]).replace("'", "")\
+                    .replace('"', "")
+                func_args_str = class_name + " " + func_args + " " + match
+                getattr(self, self.commands[func])(func_args_str)
+                return
+            func_args_str = " ".join(func_args.replace('"', "")
                                      .replace("'", "")
                                      .replace(", ", ",")
                                      .split(","))
-
-        try:
-            func_args_str = func_args_str + '{' + func_args[1]
-        except IndexError:
-            pass
 
         if func_args_str == "":
             func_args_str = class_name
@@ -145,6 +151,9 @@ class HBNBCommand(cmd.Cmd):
             return
 
         split_line = self._split_line(line)
+        if split_line[2].startswith("(") or split_line[2].startswith("["):
+            return
+
         key = split_line[0] + "." + split_line[1]
         storage.update(key, split_line[2], split_line[3])
         (storage.all()[key]).save()
@@ -187,10 +196,11 @@ class HBNBCommand(cmd.Cmd):
     def _handle_dict(self, line) -> str:
         """Handle dictionary representation"""
         dict_repr = self._check_dict_repr_type(line)
-        if not dict_repr:
+        if dict_repr == {}:
             return "not exit"
-        if len(dict_repr) == 1:
-            return "exit"
+        # if dict_repr == {"exit": 1}:
+        #     print("salma")
+        #     return "exit"
 
         forbidden_attributes = ["updated_at", "created_at", "id"]
         obj_key = line.split()[0] + '.' + line.split()[1]
@@ -213,7 +223,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             dict_repr = ast.literal_eval(dict_str)
             if type(dict_repr) != dict:
-                return {"exit": 1}
+                return {}
         except (ValueError, SyntaxError):
             return {}
 
