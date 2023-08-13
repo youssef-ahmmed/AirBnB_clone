@@ -227,13 +227,11 @@ class HBNBCommand(cmd.Cmd):
         getattr(self, self.commands[func])(func_args_str)
 
     def _check_error_for_instance_by_name(self, func, class_name, line):
-        if func and not class_name:
-            print("** class name missing **")
+        if func in self.commands.keys() and not class_name:
+            getattr(self, self.commands[func])("")
             return "exit"
 
-        if (class_name not in self.class_names
-                and
-                func not in self.commands.keys()):
+        if func not in self.commands.keys():
             self.stdout.write('*** Unknown syntax: %s\n' % line)
             return "exit"
 
