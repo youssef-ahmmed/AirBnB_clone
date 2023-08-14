@@ -43,6 +43,10 @@ class TestFileStorageInstantiation(unittest.TestCase):
         """test_file_storage_type"""
         self.assertEqual(FileStorage, type(FileStorage()))
 
+    def test_storage_var_created(self):
+        """ FileStorage object storage created """
+        self.assertEqual(type(storage), FileStorage)
+
     def test_file_storage_with_args(self):
         """test_file_storage_with_args"""
         with self.assertRaises(TypeError):
@@ -127,6 +131,12 @@ class TestFileStorageAll(unittest.TestCase):
         obj7 = Review()
         obj_set = {obj1, obj2, obj3, obj4, obj5, obj6, obj7}
         self.assertEqual(set(storage.all().values()), obj_set)
+
+    def test_all(self):
+        """test all method"""
+        obj = FileStorage()
+        obj_dict = storage.all()
+        self.assertIs(obj_dict, storage._FileStorage__objects)
 
 
 class TestFileStorageNew(unittest.TestCase):
