@@ -38,6 +38,7 @@ class TestBaseModelInstantiation(unittest.TestCase):
         self.assertEqual(BaseModel, type(BaseModel()))
 
     def test_new_instance_stored_in_objects(self):
+        """Check if BaseModel in all dict"""
         self.assertIn(BaseModel(), models.storage.all().values())
 
     def test_id_is_public_str(self):
@@ -325,6 +326,7 @@ class TestBaseModelToDict(unittest.TestCase):
                          obj.to_dict()["updated_at"])
 
     def test_to_dict_datetime_attributes_are_strs(self):
+        """test type of created_at and updated_at inside dict"""
         bm = BaseModel()
         bm_dict = bm.to_dict()
         self.assertEqual(str, type(bm_dict["created_at"]))
