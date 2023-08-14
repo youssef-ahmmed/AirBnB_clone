@@ -324,6 +324,12 @@ class TestBaseModelToDict(unittest.TestCase):
         self.assertEqual('2017-09-28T21:03:54.052298',
                          obj.to_dict()["updated_at"])
 
+    def test_to_dict_datetime_attributes_are_strs(self):
+        bm = BaseModel()
+        bm_dict = bm.to_dict()
+        self.assertEqual(str, type(bm_dict["created_at"]))
+        self.assertEqual(str, type(bm_dict["updated_at"]))
+
     def test_to_dict_id_to_create_another_instance(self):
         """test_to_dict_id_to_create_another_instance"""
         obj1 = BaseModel()
