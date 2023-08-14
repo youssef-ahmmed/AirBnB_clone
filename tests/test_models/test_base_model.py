@@ -6,6 +6,7 @@ import unittest
 import uuid
 from time import sleep
 
+import models
 from models.base_model import BaseModel
 
 
@@ -35,6 +36,9 @@ class TestBaseModelInstantiation(unittest.TestCase):
     def test_base_model_type(self):
         """Test base_model type"""
         self.assertEqual(BaseModel, type(BaseModel()))
+
+    def test_new_instance_stored_in_objects(self):
+        self.assertIn(BaseModel(), models.storage.all().values())
 
     def test_id_is_public_str(self):
         """test_id_is_public_str"""
