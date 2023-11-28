@@ -29,12 +29,34 @@ class HBNBCommand(cmd.Cmd):
         """Add new line when pressing enter"""
         print("", end="")
 
-    def do_create(self, line) -> None:
-        """Creates a new instance of a given class"""
-        if self._check_class(line) == "exit":
+    def do_create(self, args):
+        """ Create an object of any class"""
+        if not args:
+            print("** class name missing **")
+            return
+        args_list: List[str] = args.split()
+        if args_list[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
             return
 
-        obj = eval(line.split()[0])()
+        obj = eval(args_list[0])()
+        args_list.remove(args_list[0])
+
+        if args_list and args_list[0].find('=') != -1:
+            for arg in args_list:
+                arg = arg.split('=')
+                key = arg[0]
+                value = arg[1]
+                if value.startswith('"') or value.startswith("'"):
+                    value = value.strip('"').strip("'")
+                    value = value.replace('"', '\"').replace("'", "\'")\
+                                 .replace('_', ' ')
+                elif '.' in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+                setattr(obj, key, value)
+
         obj.save()
         print(obj.id)
 
@@ -78,17 +100,19 @@ class HBNBCommand(cmd.Cmd):
         storage.delete(key)
         storage.save()
 
-    def do_all(self, line) -> None:
-        """Prints all string representation of all instances
-            based or not on the class name"""
-        if line and line.split()[0] not in self.class_names:
+    def do_all(self, args):
+        """Shows all objects, or all objects of a class"""
+        list_of_str = []
+        if args and args.split()[0] not in self.classes.keys():
             print("** class doesn't exist **")
             return
-
-        instance_dict = storage.all()
+        try:
+            instance_dict = storage.all(eval(args.split()[0]))
+        except IndexError:
+            instance_dict = storage.all()
         list_of_str = []
         for key, val in instance_dict.items():
-            if not line or key.startswith(line.split()[0]):
+            if not args or key.startswith(args.split()[0]):
                 list_of_str.append(str(val))
 
         print(list_of_str)
